@@ -2,25 +2,25 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 app = FastAPI()
 
-clients = []
 mobile_clients = []
 cloud_clients = []
 
+
+# 📱 MOBILE SOCKET (receives data)
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+async def mobile_socket(websocket: WebSocket):
     await websocket.accept()
-    clients.append(websocket)
+    mobile_clients.append(websocket)
+    print("📱 Mobile connected")
 
     try:
         while True:
-            data = await websocket.receive_text()
-
-            # Broadcast to all clients
-            for client in clients:
-                await client.send_text(data)
-
+            # Optional: receive messages from mobile if needed
+            await websocket.receive_text()
     except WebSocketDisconnect:
-        clients.remove(websocket)
+        mobile_clients.remove(websocket)
+        print("📱 Mobile disconnected")
+
 
 # ☁️ CLOUD SOCKET (sends data)
 @app.websocket("/ws/mobile")
