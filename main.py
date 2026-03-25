@@ -7,7 +7,7 @@ cloud_clients = []
 
 
 # 📱 MOBILE SOCKET (receives data)
-@app.websocket("/ws")
+@app.websocket("/ws/mobile")
 async def mobile_socket(websocket: WebSocket):
     await websocket.accept()
     mobile_clients.append(websocket)
@@ -23,7 +23,7 @@ async def mobile_socket(websocket: WebSocket):
 
 
 # ☁️ CLOUD SOCKET (sends data)
-@app.websocket("/ws/mobile")
+@app.websocket("/ws/cloud")
 async def cloud_socket(websocket: WebSocket):
     await websocket.accept()
     cloud_clients.append(websocket)
